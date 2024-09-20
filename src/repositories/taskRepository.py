@@ -7,7 +7,12 @@ def save(filename, tasks):
         
 def getAll(filename):
     tasks = []
-    with open(filename, "r") as file:
-        tasks = json.load(file)
+    try:
+        with open(filename, "r") as file:
+            tasks = json.load(file)
+    except:
+        # Create file
+        with open(filename, "a") as file:
+            pass
     
     return tasks
