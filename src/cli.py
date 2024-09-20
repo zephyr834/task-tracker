@@ -1,5 +1,9 @@
 import click
-import task
+from models.task import task
+from services import taskService
+import random
+
+filename = "db/tasks.json"
 
 @click.group()
 @click.version_option(version='1.0.0')
@@ -8,10 +12,13 @@ def cli():
 
 @cli.command(name="add")
 @click.argument("title")
-def add(title):
+@click.argument("description")
+def add(title, description):
     "Add a new task"
-    
-    click.echo(f"Succesfully added task: {title}")
+    uId = random.randint(1, 100)
+    t = task(uId, title, description)
+    taskService.saveTask(filename, t)
+    click.echo(f"Succesfully added task!")
     
 @cli.command(name="update")
 @click.argument("id")
@@ -27,9 +34,7 @@ def delete(id):
     click.echo(f"Succesfully deleted task #{id}")
     
 @cli.command(name="list")
-@click.option(
-    "--status",
-    "-s",)
 def list(status):
     "Lists all tasks by status"
-    click.echo(f"Tasks with {status} status:")
+    tasks = taskService.findAll(filename)
+    print(tasks)
