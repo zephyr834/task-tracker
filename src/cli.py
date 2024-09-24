@@ -1,4 +1,5 @@
 import click
+from util.taskHelper import printTasks
 from models import task
 from services import taskService
 
@@ -16,7 +17,7 @@ def add(title, description):
     "Add a new task"
     t = task.task(title, description)
     taskService.saveTask(_filename, t)
-    click.echo(f"Succesfully added task")
+    click.echo("Succesfully added task")
     
 @cli.command(name="update")
 @click.argument("uid")
@@ -25,17 +26,18 @@ def add(title, description):
 def update(uid, title, description):
     "Update a task"
     taskService.updateById(_filename, uid, title, description)
-    click.echo(f"Succesfully updated task")
+    click.echo("Succesfully updated task")
     
 @cli.command(name="delete")
 @click.argument("uid")
 def delete(uid):
     "Delete a task"
-    click.echo(f"Succesfully deleted task #{id}")
+    taskService.deleteById(_filename, uid)
+    click.echo("Deleted task")
     
 @cli.command(name="list")
 def list():
     "Lists all tasks by status"
     tasks = taskService.findAll(_filename)
-    task.printTasks(tasks)
+    printTasks(tasks)
     
