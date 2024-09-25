@@ -46,10 +46,7 @@ def delete(uid):
 def list(status):
     "Lists all tasks"
     tasks = []
-    if status:
-        tasks = taskService.findAllByStatus(_filename, status) 
-    else:
-        tasks = taskService.findAll(_filename) 
+    tasks = taskService.findAll(_filename, status)
     printTasks(tasks)
     
 @cli.command(name="mark")

@@ -8,12 +8,10 @@ def saveTask(filename, newTask):
     tasks.append(newTask)
     taskRepository.save(filename, tasks)
 
-def findAll(filename):
-    return taskRepository.getAll(filename)
-
-def findAllByStatus(filename, status):
-    tasks = findAll(filename)
-    tasks = [t for t in tasks if t['status'] == status]
+def findAll(filename, status=None):
+    tasks = taskRepository.getAll(filename)
+    if status:
+        tasks = [t for t in tasks if t['status'] == status]
     return tasks
 
 def updateById(filename, uid, title=None, description=None, status=None):
