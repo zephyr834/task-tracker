@@ -1,6 +1,6 @@
 import click
 from util.taskHelper import printTasks
-from models import task
+from models.task import task
 from services import taskService
 
 _filename = "db/tasks.json"
@@ -15,7 +15,7 @@ def cli():
 @click.argument("description")
 def add(title, description):
     "Add a new task"
-    t = task.task(title, description)
+    t = task(title, description)
     taskService.saveTask(_filename, t)
     click.echo("Succesfully added task")
     
@@ -52,3 +52,20 @@ def list(status):
         tasks = taskService.findAll(_filename) 
     printTasks(tasks)
     
+@cli.command(name="mark")
+@click.argument("status")
+@click.argument("uid")
+def mark(status, uid):
+    "Mark a task with an updated status"
+    if isStatusValid(status):
+        taskService.updateById(_filename, uid, status=status)
+    else:
+        print("Error: Status input is invalid.")
+    
+def isStatusValid(status):
+    validStatus = { 
+                    "todo", 
+                    "in-progress", 
+                    "done"
+                    }
+    return status in validStatus
