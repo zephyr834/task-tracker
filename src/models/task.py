@@ -3,10 +3,9 @@ import time
 import random
 
 def task(title, description):
-    uid = str(int(time.time())) + str(random.randint(1000, 9999))
     defaultStatus = "todo"
     return {
-        "uid": uid,
+        "uid": 0,
         "title": title,
         "description": description,
         "status": defaultStatus,
