@@ -22,11 +22,13 @@ def add(title, description):
 @cli.command(name="update")
 @click.argument("uid")
 @click.argument("title")
-@click.argument("description")
+@click.option(
+    "-d",
+    "--description",
+    help="Updates the task description")
 def update(uid, title, description):
     "Update a task"
     taskService.updateById(_filename, uid, title, description)
-    click.echo("Succesfully updated task")
     
 @cli.command(name="delete")
 @click.argument("uid")

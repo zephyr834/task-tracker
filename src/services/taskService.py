@@ -19,12 +19,16 @@ def findAllByStatus(filename, status):
 def updateById(filename, uid, title, description):
     tasks = findAll(filename)
     for t in tasks:
-        if t['uid'] == uid:
+        if t['uid'] == int(uid):
+            #print("Found uid")
             t['title'] = title
-            t['description'] = description
+            if description:
+                t['description'] = description
             t['updatedAt'] = datetime.now().isoformat()
-            break
-    taskRepository.save(filename, tasks)
+            
+            taskRepository.save(filename, tasks)
+            return
+    
     
 def deleteById(filename, uid):
     tasks = findAll(filename)
