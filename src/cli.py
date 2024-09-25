@@ -36,8 +36,17 @@ def delete(uid):
     click.echo("Deleted task")
     
 @cli.command(name="list")
-def list():
-    "Lists all tasks by status"
-    tasks = taskService.findAll(_filename)
+@click.option(
+    "-s",
+    "--status",
+    help="Filter tasks by status: todo, in-progress, done",
+)
+def list(status):
+    "Lists all tasks"
+    tasks = []
+    if status:
+        tasks = taskService.findAllByStatus(_filename, status) 
+    else:
+        tasks = taskService.findAll(_filename) 
     printTasks(tasks)
     
