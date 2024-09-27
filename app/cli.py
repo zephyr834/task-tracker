@@ -3,6 +3,7 @@ from util.taskHelper import printTasks
 from models.task import task
 from services import taskService
 
+
 _filename = "db/tasks.json"
 
 @click.group()
@@ -27,7 +28,7 @@ def add(title, description):
     "--description",
     help="Updates the task description")
 def update(uid, title, description):
-    "Update a task"
+    "Update the title or description of task"
     taskService.updateById(_filename, uid, title, description)
     
 @cli.command(name="delete")
