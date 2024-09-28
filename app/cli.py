@@ -3,8 +3,7 @@ from util.taskHelper import printTasks
 from models.task import task
 from services import taskService
 
-
-_filename = "db/tasks.json"
+_dbjson = "db/tasks.json"
 
 @click.group()
 @click.version_option(version='1.0.0')
@@ -17,7 +16,7 @@ def cli():
 def add(title, description):
     "Add a new task"
     t = task(title, description)
-    taskService.saveTask(_filename, t)
+    taskService.saveTask(_dbjson, t)
     click.echo("Succesfully added task")
     
 @cli.command(name="update")
@@ -29,13 +28,13 @@ def add(title, description):
     help="Updates the task description")
 def update(uid, title, description):
     "Update the title or description of task"
-    taskService.updateById(_filename, uid, title, description)
+    taskService.updateById(_dbjson, uid, title, description)
     
 @cli.command(name="delete")
 @click.argument("uid")
 def delete(uid):
     "Delete a task"
-    taskService.deleteById(_filename, uid)
+    taskService.deleteById(_dbjson, uid)
     click.echo("Deleted task")
     
 @cli.command(name="list")
@@ -47,7 +46,7 @@ def delete(uid):
 def list(status):
     "Lists all tasks"
     tasks = []
-    tasks = taskService.findAll(_filename, status)
+    tasks = taskService.findAll(_dbjson, status)
     printTasks(tasks)
     
 @cli.command(name="mark")
@@ -56,7 +55,7 @@ def list(status):
 def mark(status, uid):
     "Mark a task with an updated status"
     if isStatusValid(status):
-        taskService.updateById(_filename, uid, status=status)
+        taskService.updateById(_dbjson, uid, status=status)
     else:
         print("Error: Status input is invalid.")
     
