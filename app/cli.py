@@ -28,7 +28,7 @@ def add(title, description):
 def update(uid, title, description):
     "Update the title or description of task"
     if str(uid).isdigit():
-        taskService.updateById(DATABASE, uid, title, description)
+        taskService.updateById(DATABASE, int(uid), title, description)
     else:
         raise click.BadParameter("UID must be a valid interger.")
     
@@ -37,7 +37,7 @@ def update(uid, title, description):
 def delete(uid):
     "Delete a task"
     if str(uid).isdigit():
-        taskService.deleteById(DATABASE, uid)
+        taskService.deleteById(DATABASE, int(uid))
     else:
         raise click.BadParameter("UID must be a valid interger.")
     
@@ -64,7 +64,7 @@ def mark(status, uid):
     if not isStatusValid(status):
         raise click.BadParameter("Error: Status input is invalid.")
     
-    taskService.updateById(DATABASE, uid, status=status)
+    taskService.updateById(DATABASE, int(uid), status=status)
         
     
 def isStatusValid(status):

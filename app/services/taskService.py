@@ -14,11 +14,11 @@ def findAll(filename, status=None):
         tasks = [t for t in tasks if t['status'] == status]
     return tasks
 
-def updateById(filename, uid, title=None, description=None, status=None):
+def updateById(filename:str, uid:int, title=None, description=None, status=None):
     if title or description or status:
         tasks = findAll(filename)
         for t in tasks:
-            if t['uid'] == int(uid):
+            if t['uid'] == uid:
                 #print("Found uid")
                 if title:
                     t['title'] = title
@@ -31,7 +31,7 @@ def updateById(filename, uid, title=None, description=None, status=None):
                 taskRepository.saveJson(filename, tasks)
                 return
     
-def deleteById(filename, uid):
+def deleteById(filename:str, uid:int):
     tasks = findAll(filename)
     tasks = [t for t in tasks if t['uid'] != uid]
     taskRepository.saveJson(filename, tasks)
