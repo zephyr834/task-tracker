@@ -1,14 +1,16 @@
 from repositories import taskRepository
+from models.task import task
 from datetime import datetime
 
-def saveTask(filename, newTask):
-    tasks = findAll(filename) 
+def saveTask(filename, title, description):
+    t = task(title, description)
+    tasks = getAll(filename) 
     lastId = max(t['uid'] for t in tasks) if tasks else 0
-    newTask['uid'] = lastId + 1
-    tasks.append(newTask)
+    t['uid'] = lastId + 1
+    tasks.append(t)
     taskRepository.saveJson(filename, tasks)
 
-def findAll(filename, status=None):
+def getAll(filename, status=None):
     tasks = taskRepository.loadJson(filename)
     if status:
         tasks = [t for t in tasks if t['status'] == status]
@@ -16,7 +18,7 @@ def findAll(filename, status=None):
 
 def updateById(filename:str, uid:int, title=None, description=None, status=None):
     if title or description or status:
-        tasks = findAll(filename)
+        tasks = getAll(filename)
         for t in tasks:
             if t['uid'] == uid:
                 #print("Found uid")
@@ -32,6 +34,6 @@ def updateById(filename:str, uid:int, title=None, description=None, status=None)
                 return
     
 def deleteById(filename:str, uid:int):
-    tasks = findAll(filename)
+    tasks = getAll(filename)
     tasks = [t for t in tasks if t['uid'] != uid]
     taskRepository.saveJson(filename, tasks)

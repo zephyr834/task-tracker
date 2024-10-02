@@ -1,6 +1,5 @@
 import click
 from util.taskHelper import printTasks
-from models.task import task
 from services import taskService
 
 DATABASE = "tasks.json"
@@ -15,8 +14,7 @@ def cli():
 @click.argument("description")
 def add(title, description):
     "Add a new task"
-    t = task(title, description)
-    taskService.saveTask(DATABASE, t)
+    taskService.saveTask(DATABASE, title, description)
     
 @cli.command(name="update")
 @click.argument("uid")
@@ -51,7 +49,7 @@ def delete(uid):
 def list(status):
     "Lists all tasks"
     tasks = []
-    tasks = taskService.findAll(DATABASE, status)
+    tasks = taskService.getAll(DATABASE, status)
     printTasks(tasks)
     
 @cli.command(name="mark")
