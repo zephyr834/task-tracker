@@ -8,8 +8,8 @@ def convertIsoDateTime(isoDateTime):
     return readable_format
 
 def printTasks(tasks):
-    print(f"{'UID':^15} | {'Title':^15}| {'Description':^15}| {'Status':^15}| {'Created At':^30}| {'Updated At':^30}|")
+    print(f"{'UID':^5} | {'Title':^30}| {'Description':^30}| {'Status':^15}| {'Created At':^30}| {'Updated At':^30}|")
     for t in tasks:
         createdAt = convertIsoDateTime(t['createdAt'])
         updatedAt = convertIsoDateTime(t['updatedAt'])
-        print(f"{t['uid']:^15} | {t['title']:^15}| {t['description']:^15}| {t['status']:^15}| {createdAt:^30}| {updatedAt:^30}|")
+        print(f"{t['uid']:^5} | {t['title']:^30}| {t['description']:^30}| {t['status']:^15}| {createdAt:^30}| {updatedAt:^30}|")
