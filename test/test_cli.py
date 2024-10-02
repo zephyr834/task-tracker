@@ -55,9 +55,10 @@ def test_update(runner):
     
 def test_updateInvalidUid(runner):
     uid = "asdf"
+    expectedError = "Error: Invalid value: UID must be a valid interger."
     result = runner.invoke(cli.update, [uid, "Hello World"])
     assert result.exit_code == 2
-    assert "Error: Invalid value: UID must be a valid interger." in result.output
+    assert expectedError in result.output
 
 def test_delete(runner):
     uidToDelete = "2"
@@ -67,19 +68,33 @@ def test_delete(runner):
     runner.invoke(cli.add, ['Hello World', 'Much wow'])
     runner.invoke(cli.add, [expectedTitle, expectedDesc])
     result = runner.invoke(cli.delete, [uidToDelete])
-    # assert result.exit_code == 0
-    print(result)
+    assert result.exit_code == 0
     results = loadJson(cli.DATABASE)
-    print(results)
     assert size == len(results), "Delete command failed: Size is incorrect."
     assert expectedTitle not in results[0]['title'], "Delete command failed: Title is incorrect."
     assert expectedDesc not in results[0]['description'], "Delete command failed: Description is incorrect."
     
 def test_deleteInvalidUid(runner):
     uid = "asdf"
+    expectedError = "Error: Invalid value: UID must be a valid interger."
     result = runner.invoke(cli.delete, [uid])
     assert result.exit_code == 2
-    assert "Error: Invalid value: UID must be a valid interger." in result.output
+    assert expectedError in result.output
 
 def test_mark(runner):
-    pass
+    uid = "1"
+    expectedStatus = "in-progress"
+    runner.invoke(cli.add, ['Hello World', 'Much wow'])
+    result = runner.invoke(cli.mark, [expectedStatus, uid])
+    assert result.exit_code == 0
+    results = loadJson(cli.DATABASE)
+    assert expectedStatus in results[0]['status'], "Update command failed: Status is incorrect."
+    
+def test_markInvalid(runner):
+    uid = "1"
+    status = "invalid-status"
+    expectedError = "Error: Status input is invalid."
+    runner.invoke(cli.add, ['Hello World', 'Much wow'])
+    result = runner.invoke(cli.mark, [status, uid])
+    assert result.exit_code == 2
+    assert expectedError in result.output
