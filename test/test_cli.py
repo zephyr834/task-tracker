@@ -44,14 +44,19 @@ def test_list(runner):
 
 def test_update(runner):
     uid = "1"
+    firstTitle = 'Hello World'
+    firstDesc = 'Much wow'
     expectedTitle = 'Goodbye World'
     expectedDesc = "I was updated!"
-    runner.invoke(cli.add, ['Hello World', 'Much wow'])
+    runner.invoke(cli.add, [firstTitle, firstDesc])
     result = runner.invoke(cli.update, [uid, expectedTitle, "-d", expectedDesc])
     assert result.exit_code == 0
     results = loadJson(cli.DATABASE)
     assert expectedTitle in results[0]['title'], "Update command failed: Title is incorrect."
     assert expectedDesc in results[0]['description'], "Update command failed: Description is incorrect."
+    assert results[0]['createdAt'] != results[0]['updatedAt'], "Update command failed: UpdatedAt is incorrect."
+    assert firstTitle not in results[0]['title'], "Update command failed: Original title still exists."
+    assert firstDesc not in results[0]['description'], "Update command failed: Original description still exists."
     
 def test_updateInvalidUid(runner):
     uid = "asdf"
