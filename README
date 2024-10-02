@@ -7,15 +7,16 @@ Built on:
 Python3 - 3.11.9
 Mac/Linux
 
-Setup:
+Setup using source code:
 
 1. Setup virtual env:
-   python3 -m venv venv
-   source ./venv/bin/activate
-2. pip3 install -r requirements.txt
+    python3 -m venv venv
+    source ./venv/bin/activate
+2. Install Requirements:
+    pip3 install -r requirements.txt
 
 Run CLI:
-python3 src/main.py [OPTIONS] COMMAND [ARGS]
+python3 app/main.py [OPTIONS] COMMAND [ARGS]
 
 Run tests:
 pytest
