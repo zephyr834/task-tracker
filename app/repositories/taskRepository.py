@@ -1,11 +1,11 @@
 import json
 from models import task
 
-def save(filename, tasks):
+def saveJson(filename, tasks):
     with open(filename, 'w') as file:
         json.dump(tasks, file, indent=4)
         
-def getAll(filename):
+def loadJson(filename):
     tasks = []
     try:
         with open(filename, "r") as file:

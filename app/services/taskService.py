@@ -6,10 +6,10 @@ def saveTask(filename, newTask):
     lastId = max(t['uid'] for t in tasks) if tasks else 0
     newTask['uid'] = lastId + 1
     tasks.append(newTask)
-    taskRepository.save(filename, tasks)
+    taskRepository.saveJson(filename, tasks)
 
 def findAll(filename, status=None):
-    tasks = taskRepository.getAll(filename)
+    tasks = taskRepository.loadJson(filename)
     if status:
         tasks = [t for t in tasks if t['status'] == status]
     return tasks
@@ -28,10 +28,10 @@ def updateById(filename, uid, title=None, description=None, status=None):
                     t['status'] = status
                 t['updatedAt'] = datetime.now().isoformat()
                 
-                taskRepository.save(filename, tasks)
+                taskRepository.saveJson(filename, tasks)
                 return
     
 def deleteById(filename, uid):
     tasks = findAll(filename)
     tasks = [t for t in tasks if t['uid'] != uid]
-    taskRepository.save(filename, tasks)
+    taskRepository.saveJson(filename, tasks)

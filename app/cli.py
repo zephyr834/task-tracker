@@ -3,7 +3,7 @@ from util.taskHelper import printTasks
 from models.task import task
 from services import taskService
 
-_dbjson = "db/tasks.json"
+DATABASE = "db/tasks.json"
 
 @click.group()
 @click.version_option(version='1.0.0')
@@ -16,8 +16,7 @@ def cli():
 def add(title, description):
     "Add a new task"
     t = task(title, description)
-    taskService.saveTask(_dbjson, t)
-    click.echo("Succesfully added task")
+    taskService.saveTask(DATABASE, t)
     
 @cli.command(name="update")
 @click.argument("uid")
@@ -28,14 +27,20 @@ def add(title, description):
     help="Updates the task description")
 def update(uid, title, description):
     "Update the title or description of task"
-    taskService.updateById(_dbjson, uid, title, description)
+    if str(uid).isdigit():
+        taskService.updateById(DATABASE, uid, title, description)
+    else:
+        raise click.BadParameter("UID must be a valid interger.")
     
 @cli.command(name="delete")
 @click.argument("uid")
 def delete(uid):
     "Delete a task"
-    taskService.deleteById(_dbjson, uid)
-    click.echo("Deleted task")
+    if str(uid).isdigit():
+        taskService.deleteById(DATABASE, uid)
+    else:
+        raise click.BadParameter("UID must be a valid interger.")
+    
     
 @cli.command(name="list")
 @click.option(
@@ -46,7 +51,7 @@ def delete(uid):
 def list(status):
     "Lists all tasks"
     tasks = []
-    tasks = taskService.findAll(_dbjson, status)
+    tasks = taskService.findAll(DATABASE, status)
     printTasks(tasks)
     
 @cli.command(name="mark")
@@ -54,10 +59,13 @@ def list(status):
 @click.argument("uid")
 def mark(status, uid):
     "Mark a task with an updated status"
-    if isStatusValid(status):
-        taskService.updateById(_dbjson, uid, status=status)
-    else:
-        print("Error: Status input is invalid.")
+    if not str(uid).isdigit():
+        raise click.BadParameter("UID must be a valid interger.")
+    if not isStatusValid(status):
+        raise click.BadParameter("Error: Status input is invalid.")
+    
+    taskService.updateById(DATABASE, uid, status=status)
+        
     
 def isStatusValid(status):
     validStatus = { 
