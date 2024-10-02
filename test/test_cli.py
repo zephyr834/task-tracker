@@ -7,7 +7,7 @@ from app.repositories.taskRepository import loadJson
 
 @pytest.fixture()
 def runner():
-    cli.DATABASE = "db/tasks_test.json"
+    cli.DATABASE = "tasks_test.json"
     yield CliRunner()
     #Teardown
     if os.path.exists(cli.DATABASE):

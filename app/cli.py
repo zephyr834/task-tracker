@@ -3,12 +3,12 @@ from util.taskHelper import printTasks
 from models.task import task
 from services import taskService
 
-DATABASE = "db/tasks.json"
+DATABASE = "tasks.json"
 
 @click.group()
 @click.version_option(version='1.0.0')
 def cli():
-    "Task Tracker CLI"
+    "Tasksu"
 
 @cli.command(name="add")
 @click.argument("title")
