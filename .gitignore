@@ -1,3 +1,6 @@
 **/__pycache__
 .venv
 db/
+dist/
+build/
+tasksu.egg-info/

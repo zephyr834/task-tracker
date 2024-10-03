@@ -1,13 +1,15 @@
 import click
+import importlib.metadata
 from util.taskHelper import printTasks
 from services import taskService
 
 DATABASE = "tasks.json"
+package_version = importlib.metadata.version('tasksu')
 
 @click.group()
-@click.version_option(version='1.0.0')
+@click.version_option(package_version, prog_name="tasksu")
 def cli():
-    "Tasksu"
+    "Tasksu - a CLI Task Manager"
 
 @cli.command(name="add")
 @click.argument("title")
